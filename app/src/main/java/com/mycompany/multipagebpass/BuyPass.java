@@ -1,8 +1,10 @@
 package com.mycompany.multipagebpass;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -46,6 +48,7 @@ public class BuyPass extends ActionBarActivity {
     private SimpleDateFormat dateFormatter;
 
     Calendar newDate;
+    SQLiteDatabase passdb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +128,7 @@ public class BuyPass extends ActionBarActivity {
 
     }
 
-    private void setpassdate(){
+    private void setpassdate() {
 
         dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
@@ -139,7 +142,13 @@ public class BuyPass extends ActionBarActivity {
         amount = (TextView) findViewById(R.id.t_amountdisp);
         amount.setInputType(InputType.TYPE_NULL);
 
-        fromDateEtxt.setOnClickListener(this);
+        fromDateEtxt.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                fromDatePickerDialog.show();
+            }
+        });
     }
 
     private void setimage(){
@@ -261,6 +270,8 @@ public class BuyPass extends ActionBarActivity {
         passtype = ((Spinner)findViewById(R.id.s_passtype)).getSelectedItem().toString();
         passduration = ((Spinner)findViewById(R.id.s_passduration)).getSelectedItem().toString();
 
+        passdb=openOrCreateDatabase("passamtDB", Context.MODE_PRIVATE, null);
+
         Cursor c=passdb.rawQuery("SELECT amount FROM passamt WHERE passtype='"+passtype+"' AND passduration='"+passduration+"'",null);
         if(c.moveToFirst())
         {
@@ -278,6 +289,8 @@ public class BuyPass extends ActionBarActivity {
                     Toast.LENGTH_LONG).show();
 
         }
+
+        passdb.close();
     }
 
 

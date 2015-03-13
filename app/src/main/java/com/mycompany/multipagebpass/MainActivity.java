@@ -1,6 +1,7 @@
 package com.mycompany.multipagebpass;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -25,16 +26,22 @@ public class MainActivity extends ActionBarActivity {
         b_buypass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), (String)"In Buypass",
-                        Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(MainActivity.this, BuyPass.class);
+                startActivity(intent);
+               /* Toast.makeText(getApplicationContext(), (String)"In Buypass",
+                        Toast.LENGTH_LONG).show();*/
             }
         });
 
         v_viewpass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), (String)"In Viewpass",
-                        Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this, ViewPass.class);
+                startActivity(intent);
+
+                /*Toast.makeText(getApplicationContext(), (String)"In Viewpass",
+                        Toast.LENGTH_LONG).show();*/
             }
         });
 
@@ -51,6 +58,8 @@ public class MainActivity extends ActionBarActivity {
         passdb.execSQL("INSERT INTO passamt (passtype, passduration, amount) VALUES ('Red Board','Monthly',1050);");
         passdb.execSQL("INSERT INTO passamt (passtype, passduration, amount) VALUES ('Vajra','Daily',150);");
         passdb.execSQL("INSERT INTO passamt (passtype, passduration, amount) VALUES ('Vajra','Monthly',2250);");
+
+        passdb.close();
 
     }
 
