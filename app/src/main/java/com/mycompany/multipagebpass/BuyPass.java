@@ -174,6 +174,7 @@ public class BuyPass extends ActionBarActivity {
                 Bitmap image= imgFavorite.getDrawingCache();
                 Intent intent = new Intent(BuyPass.this, ViewPass.class);
                 Bundle extras = new Bundle();
+                extras.putString("e_callingclass", "BuyPass.this");
                 extras.putString("e_name",custname.getText().toString());
                 extras.putString("e_address",custaddress.getText().toString());
                 extras.putString("e_passtype",passtype);
@@ -185,8 +186,16 @@ public class BuyPass extends ActionBarActivity {
                 intent.putExtras(extras);
         /*        intent.putExtra("e_image",bp);*/
                 startActivity(intent);
+
+                passdb=openOrCreateDatabase("passamtDB", Context.MODE_PRIVATE, null);
+                passdb.execSQL("INSERT into validpass (name, address, passtype, passduration, fromdate, todate, amount) VALUES " +
+                        "(custname.getText().toString(), custaddress.getText().toString(), passtype, passduration, " +
+                        "fromDateEtxt.getText().toString(), amount);");
+                passdb.close();
             }
         });
+
+        passdb.close();
     }
 
     public void open(){

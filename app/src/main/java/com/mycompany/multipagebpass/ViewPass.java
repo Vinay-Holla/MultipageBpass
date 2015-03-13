@@ -1,6 +1,9 @@
 package com.mycompany.multipagebpass;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -8,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class ViewPass extends ActionBarActivity {
@@ -19,8 +23,11 @@ public class ViewPass extends ActionBarActivity {
     private TextView fromdate;
     private TextView todate;
     private TextView amount;
+    private String classname;
     ImageView imgFavorite;
     Bitmap bp;
+    SQLiteDatabase passdb;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +46,45 @@ public class ViewPass extends ActionBarActivity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
-        name.setText(extras.getString("e_name"));
-        address.setText(extras.getString("e_address"));
-        passtype.setText(extras.getString("e_passtype"));
-        passduration.setText(extras.getString("e_passduration"));
-        fromdate.setText(extras.getString("e_fromdate"));
-        todate.setText(extras.getString("e_todate"));
-        amount.setText(extras.getString("e_amount"));
+        classname = extras.getString("e_callingclass");
+
+        if (classname.equals("BuyPass.this")) {
+
+            name.setText(extras.getString("e_name"));
+            address.setText(extras.getString("e_address"));
+            passtype.setText(extras.getString("e_passtype"));
+            passduration.setText(extras.getString("e_passduration"));
+            fromdate.setText(extras.getString("e_fromdate"));
+            todate.setText(extras.getString("e_todate"));
+            amount.setText(extras.getString("e_amount"));
+
+        } else  if (classname.equals("MainActivity.this")) {
+
+            passdb=openOrCreateDatabase("passamtDB", Context.MODE_PRIVATE, null);
+            Cursor c=passdb.rawQuery("SELECT * FROM validpass",null);
+            if(c.moveToFirst())
+            {
+                name.setText(String.valueOf(c.getInt(0)));
+                address.setText(String.valueOf(c.getInt(1)));
+                passtype.setText(String.valueOf(c.getInt(2)));
+                passduration.setText(String.valueOf(c.getInt(3)));
+                fromdate.setText(String.valueOf(c.getInt(4)));
+                todate.setText(String.valueOf(c.getInt(5)));
+                amount.setText(String.valueOf(c.getInt(6)));
+
+            }
+            else
+            {
+
+                Toast.makeText(getApplicationContext(), (String) "No Records in DB",
+                        Toast.LENGTH_LONG).show();
+
+            }
+            passdb.close();
+
+        }
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
