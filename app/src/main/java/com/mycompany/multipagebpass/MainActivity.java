@@ -38,6 +38,9 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ViewPass.class);
+                Bundle extras = new Bundle();
+                extras.putString("e_callingclass", "MainActivity.this");
+                intent.putExtras(extras);
                 startActivity(intent);
 
                 /*Toast.makeText(getApplicationContext(), (String)"In Viewpass",
