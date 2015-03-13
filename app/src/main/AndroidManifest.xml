@@ -24,6 +24,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mycompany.multipagebpass.MainActivity" />
         </activity>
+        <activity
+            android:name=".ViewPass"
+            android:label="@string/title_activity_view_pass" >
+        </activity>
     </application>
 
 </manifest>

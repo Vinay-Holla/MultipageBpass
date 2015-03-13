@@ -7,5 +7,28 @@
     <string name="buypass">Buy my pass</string>
     <string name="viewpass">View my pass</string>
     <string name="title_activity_buy_pass">BuyPass</string>
+    <string name="title_activity_view_pass">ViewPass</string>
+
+    <string name="nameheader">Name</string>
+    <string name="addressheader">Address</string>
+    <string name="passtype">Pass Type</string>
+    <string name="passduration">Duration</string>
+    <string name="passduration1">Duration</string>
+    <string name="fromdate">From Date</string>
+    <string name="todate">To Date</string>
+    <string name="amount">Amount</string>
+    <string name="pass_text">Get Pass</string>
+
+    <string-array name="a_passtype">
+        <item>Black Board</item>
+        <item>Red Board</item>
+        <item>Vajra</item>
+    </string-array>
+    <string-array name="a_passduration">
+        <item>Daily</item>
+        <item>Monthly</item>
+    </string-array>
+
+    <string name="title_activity_pass_view">PassView</string>
 
 </resources>
