@@ -63,7 +63,8 @@ public class MainActivity extends ActionBarActivity {
         passdb.execSQL("INSERT INTO passamt (passtype, passduration, amount) VALUES ('Vajra','Monthly',2250);");
 
         passdb.execSQL("CREATE TABLE IF NOT EXISTS validpass(name VARCHAR, address VARCHAR, passtype VARCHAR," +
-                "passduration VARCHAR, fromdate VARCHAR, todate VARCHAR, amount int;");
+                "passduration VARCHAR, fromdate VARCHAR, todate VARCHAR, amount int);");
+        /*passdb.execSQL("CREATE TABLE");*/
         passdb.close();
 
     }

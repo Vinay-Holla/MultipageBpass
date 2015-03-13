@@ -43,6 +43,7 @@ public class BuyPass extends ActionBarActivity {
     Bitmap bp;
     Spinner s_passtype;
     Spinner s_passduration;
+    int intamount;
 
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
@@ -187,15 +188,29 @@ public class BuyPass extends ActionBarActivity {
         /*        intent.putExtra("e_image",bp);*/
                 startActivity(intent);
 
+                String val1, val2, val3, val4;
+                val1 = custname.getText().toString();
+                val2 = custaddress.getText().toString();
+                val3 = fromDateEtxt.getText().toString();
+                val4 = toDateEtxt.getText().toString();
+
+
                 passdb=openOrCreateDatabase("passamtDB", Context.MODE_PRIVATE, null);
-                passdb.execSQL("INSERT into validpass (name, address, passtype, passduration, fromdate, todate, amount) VALUES " +
+/*                passdb.execSQL("INSERT into validpass (name, address, passtype, passduration, fromdate, todate, amount) VALUES " +
                         "(custname.getText().toString(), custaddress.getText().toString(), passtype, passduration, " +
-                        "fromDateEtxt.getText().toString(), amount);");
+                        "fromDateEtxt.getText().toString(), amount);");*/
+
+                  passdb.execSQL("INSERT into validpass (name, address, passtype, passduration, fromdate, todate, amount) VALUES" +
+                          " ('" + val1 + "', '" + val2 + "', '" + passtype + "', '" + passduration + "', '" + val3 + "', '" + val4 + "', " + intamount + ");");
+
+                /*passdb.execSQL("INSERT INTO passamt (passtype, passduration, amount) VALUES ('Black Board','Daily',60);");
+                passdb.execSQL("CREATE TABLE IF NOT EXISTS validpass(name VARCHAR, address VARCHAR, passtype VARCHAR," +
+                        "passduration VARCHAR, fromdate VARCHAR, todate VARCHAR, amount int);");*/
+
                 passdb.close();
             }
         });
 
-        passdb.close();
     }
 
     public void open(){
@@ -288,6 +303,7 @@ public class BuyPass extends ActionBarActivity {
 
             /*amount.setText(c.getString(1));*/
             amount.setText(String.valueOf(c.getInt(0)));
+            intamount = c.getInt(0);
 
         }
         else
