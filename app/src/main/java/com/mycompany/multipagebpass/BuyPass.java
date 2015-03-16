@@ -188,14 +188,32 @@ public class BuyPass extends ActionBarActivity {
         /*        intent.putExtra("e_image",bp);*/
                 startActivity(intent);
 
-                String val1, val2, val3, val4;
+                String val1, val2, val3, val4, val5, val6, val7, val8, val9, val10;
+                int outamount;
                 val1 = custname.getText().toString();
                 val2 = custaddress.getText().toString();
                 val3 = fromDateEtxt.getText().toString();
                 val4 = toDateEtxt.getText().toString();
 
+  /*              Toast.makeText(getApplicationContext(),  val1 ,
+                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),  val2 ,
+                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),  passtype ,
+                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),  passduration ,
+                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),  val3 ,
+                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),  val4 ,
+                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),  amount.getText().toString() ,
+                        Toast.LENGTH_LONG).show();*/
+
 
                 passdb=openOrCreateDatabase("passamtDB", Context.MODE_PRIVATE, null);
+
+                passdb.execSQL("DELETE from validpass;");
 /*                passdb.execSQL("INSERT into validpass (name, address, passtype, passduration, fromdate, todate, amount) VALUES " +
                         "(custname.getText().toString(), custaddress.getText().toString(), passtype, passduration, " +
                         "fromDateEtxt.getText().toString(), amount);");*/
@@ -203,9 +221,32 @@ public class BuyPass extends ActionBarActivity {
                   passdb.execSQL("INSERT into validpass (name, address, passtype, passduration, fromdate, todate, amount) VALUES" +
                           " ('" + val1 + "', '" + val2 + "', '" + passtype + "', '" + passduration + "', '" + val3 + "', '" + val4 + "', " + intamount + ");");
 
-                /*passdb.execSQL("INSERT INTO passamt (passtype, passduration, amount) VALUES ('Black Board','Daily',60);");
-                passdb.execSQL("CREATE TABLE IF NOT EXISTS validpass(name VARCHAR, address VARCHAR, passtype VARCHAR," +
-                        "passduration VARCHAR, fromdate VARCHAR, todate VARCHAR, amount int);");*/
+
+                  Cursor c=passdb.rawQuery("SELECT * FROM validpass",null);
+                  if(c.moveToFirst()) {
+                      val5 = String.valueOf(c.getString(0));
+                      val6 = String.valueOf(c.getString(1));
+                      val7 = String.valueOf(c.getString(2));
+                      val8 = String.valueOf(c.getString(3));
+                      val9 = String.valueOf(c.getString(4));
+                      val10 = String.valueOf(c.getString(5));
+                      outamount = c.getInt(6);
+
+/*                Toast.makeText(getApplicationContext(), "Name: " + val5 ,
+                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),  "Address: " + val6 ,
+                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),  "passtype: " + val7 ,
+                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),  "passduration: " + val8 ,
+                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),  "fromdate: " + val9 ,
+                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),  "todate: " + val10 ,
+                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "amount: " + outamount,
+                        Toast.LENGTH_LONG).show();*/
+                  }
 
                 passdb.close();
             }
@@ -273,8 +314,8 @@ public class BuyPass extends ActionBarActivity {
         /*newCalendar1.add(Calendar.DAY_OF_MONTH, 12);*/
         int add_days =0;
 
-        Toast.makeText(getApplicationContext(), (String) passduration,
-                Toast.LENGTH_LONG).show();
+        /*Toast.makeText(getApplicationContext(), (String) passduration,
+                Toast.LENGTH_LONG).show();*/
 
         switch (passduration){
             case "Daily"   :    add_days = 0;

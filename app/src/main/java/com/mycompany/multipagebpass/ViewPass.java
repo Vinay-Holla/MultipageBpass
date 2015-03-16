@@ -64,13 +64,18 @@ public class ViewPass extends ActionBarActivity {
             Cursor c=passdb.rawQuery("SELECT * FROM validpass",null);
             if(c.moveToFirst())
             {
-                name.setText(String.valueOf(c.getInt(0)));
-                address.setText(String.valueOf(c.getInt(1)));
-                passtype.setText(String.valueOf(c.getInt(2)));
-                passduration.setText(String.valueOf(c.getInt(3)));
-                fromdate.setText(String.valueOf(c.getInt(4)));
-                todate.setText(String.valueOf(c.getInt(5)));
+                name.setText(String.valueOf(c.getString(0)));
+                address.setText(String.valueOf(c.getString(1)));
+                passtype.setText(String.valueOf(c.getString(2)));
+                passduration.setText(String.valueOf(c.getString(3)));
+                fromdate.setText(String.valueOf(c.getString(4)));
+                todate.setText(String.valueOf(c.getString(5)));
                 amount.setText(String.valueOf(c.getInt(6)));
+
+/*                Toast.makeText(getApplicationContext(),  name.getText().toString() ,
+                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),  address.getText().toString() ,
+                        Toast.LENGTH_LONG).show();*/
 
             }
             else
