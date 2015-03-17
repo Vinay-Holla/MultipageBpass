@@ -3,6 +3,7 @@ package com.mycompany.multipagebpass;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -47,9 +48,11 @@ public class BuyPass extends ActionBarActivity {
 
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
+    public static final String PREFS_NAME = "User_Inputs";
 
     Calendar newDate;
     SQLiteDatabase passdb;
+    SharedPreferences user_details;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,7 @@ public class BuyPass extends ActionBarActivity {
         beginpayment();
         setDateTimeField();
         setAmountField();
+        getSharedpref();
 
     }
 
@@ -171,6 +175,8 @@ public class BuyPass extends ActionBarActivity {
         pay_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v1) {
+
+                setSharedpref();
                 imgFavorite.buildDrawingCache();
                 Bitmap image= imgFavorite.getDrawingCache();
                 Intent intent = new Intent(BuyPass.this, ViewPass.class);
@@ -359,6 +365,30 @@ public class BuyPass extends ActionBarActivity {
         passdb.close();
     }
 
+    private void getSharedpref(){
+
+        user_details = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String pref_custname = user_details.getString("custname", null);
+        String pref_custaddress = user_details.getString("custaddress", null);
+
+        if (pref_custname != null){
+            custname.setText(pref_custname);
+        }
+        if (pref_custaddress != null){
+            custaddress.setText(pref_custaddress);
+        }
+
+    }
+
+    private void setSharedpref(){
+
+        user_details = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor prefeditor = user_details.edit();
+        prefeditor.putString("custname", custname.getText().toString());
+        prefeditor.putString("custaddress", custaddress.getText().toString());
+        prefeditor.commit();
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
