@@ -7,6 +7,9 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -23,8 +26,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 
@@ -45,6 +51,9 @@ public class BuyPass extends ActionBarActivity {
     Spinner s_passtype;
     Spinner s_passduration;
     int intamount;
+    Uri imageUri;
+    public static final int MEDIA_TYPE_IMAGE = 1;
+    public static final int MEDIA_TYPE_VIDEO = 2;
 
     private DatePickerDialog fromDatePickerDialog;
     private SimpleDateFormat dateFormatter;
@@ -53,6 +62,7 @@ public class BuyPass extends ActionBarActivity {
     Calendar newDate;
     SQLiteDatabase passdb;
     SharedPreferences user_details;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,8 +187,8 @@ public class BuyPass extends ActionBarActivity {
             public void onClick(View v1) {
 
                 setSharedpref();
-                imgFavorite.buildDrawingCache();
-                Bitmap image= imgFavorite.getDrawingCache();
+             /*   imgFavorite.buildDrawingCache();
+                Bitmap image= imgFavorite.getDrawingCache();*/
                 Intent intent = new Intent(BuyPass.this, ViewPass.class);
                 Bundle extras = new Bundle();
                 extras.putString("e_callingclass", "BuyPass.this");
@@ -189,6 +199,7 @@ public class BuyPass extends ActionBarActivity {
                 extras.putString("e_fromdate",fromDateEtxt.getText().toString());
                 extras.putString("e_todate",toDateEtxt.getText().toString());
                 extras.putString("e_amount",amount.getText().toString());
+                extras.putParcelable("e_image", bp);
                 /*extras.putParcelable("e_image", image);*/
                 intent.putExtras(extras);
         /*        intent.putExtra("e_image",bp);*/
@@ -262,6 +273,10 @@ public class BuyPass extends ActionBarActivity {
 
     public void open(){
         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+
+        /*imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),"fname_" +
+                   String.valueOf(System.currentTimeMillis()) + ".jpg"));*/
+
         startActivityForResult(intent, 0);
     }
 
@@ -270,8 +285,16 @@ public class BuyPass extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
+        /*Bundle extras = data.getExtras();*/
+
+        /*Toast.makeText(getApplicationContext(), (String)"Image Path: " + (String)imageUri.toString(),
+                Toast.LENGTH_LONG).show();*/
+
+
         bp = (Bitmap) data.getExtras().get("data");
         imgFavorite.setImageBitmap(bp);
+        /*boolean retval = saveImageToInternalStorage(bp);*/
+
         /*imgFavorite.setImageBitmap(decodeFile(selectedImagePath));*/
 
         /*String pathToImage = mImageCaptureUri.getPath();
@@ -388,6 +411,27 @@ public class BuyPass extends ActionBarActivity {
         prefeditor.putString("custaddress", custaddress.getText().toString());
         prefeditor.commit();
 
+    }
+
+
+    public boolean saveImageToInternalStorage(Bitmap image) {
+
+
+        try {
+// Use the compress method on the Bitmap object to write image to
+// the OutputStream
+
+            FileOutputStream fos = context.openFileOutput("BITMAP_1", Context.MODE_PRIVATE);
+
+// Writing the bitmap to the output stream
+            image.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+
+            return true;
+        } catch (Exception e) {
+
+            return false;
+        }
     }
 
     @Override

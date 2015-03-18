@@ -17,7 +17,7 @@
     <string name="fromdate">From Date</string>
     <string name="todate">To Date</string>
     <string name="amount">Amount</string>
-    <string name="pass_text">Get Pass</string>
+    <string name="pass_text">Proceed to payment</string>
 
     <string-array name="a_passtype">
         <item>Black Board</item>

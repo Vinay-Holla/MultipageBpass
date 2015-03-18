@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +14,9 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileInputStream;
 
 
 public class ViewPass extends ActionBarActivity {
@@ -25,9 +30,10 @@ public class ViewPass extends ActionBarActivity {
     private TextView amount;
     private String classname;
     ImageView imgFavorite;
-    Bitmap bp;
+    Bitmap bp = null;
     SQLiteDatabase passdb;
 
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +63,7 @@ public class ViewPass extends ActionBarActivity {
             fromdate.setText(extras.getString("e_fromdate"));
             todate.setText(extras.getString("e_todate"));
             amount.setText(extras.getString("e_amount"));
+            bp = extras.getParcelable("e_image");
 
         } else  if (classname.equals("MainActivity.this")) {
 
@@ -89,7 +96,29 @@ public class ViewPass extends ActionBarActivity {
 
         }
 
+
+     /*   try {
+            File filePath = context.getFileStreamPath("desiredFilename.png");
+            FileInputStream fi = new FileInputStream(filePath);
+            bp = BitmapFactory.decodeStream(fi);
+        } catch (Exception ex) {
+            Toast.makeText(getApplicationContext(), "Image problem",
+                    Toast.LENGTH_LONG).show();
+        }*/
+
+        /*try {
+            FileInputStream fi = openFileInput("BITMAP_1");
+            bp = BitmapFactory.decodeStream(fi);
+            fi.close();
+        }catch (Exception ex) {
+            Toast.makeText(getApplicationContext(), "Image problem",
+                    Toast.LENGTH_LONG).show();
+        }*/
+
+        imgFavorite.setImageBitmap(bp);
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
