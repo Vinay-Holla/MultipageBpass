@@ -106,14 +106,14 @@ public class ViewPass extends ActionBarActivity {
                     Toast.LENGTH_LONG).show();
         }*/
 
-        /*try {
-            FileInputStream fi = openFileInput("BITMAP_1");
+        try {
+            FileInputStream fi = openFileInput("VINAY_1");
             bp = BitmapFactory.decodeStream(fi);
             fi.close();
         }catch (Exception ex) {
             Toast.makeText(getApplicationContext(), "Image problem",
                     Toast.LENGTH_LONG).show();
-        }*/
+        }
 
         imgFavorite.setImageBitmap(bp);
     }

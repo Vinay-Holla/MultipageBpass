@@ -27,7 +27,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -200,9 +202,7 @@ public class BuyPass extends ActionBarActivity {
                 extras.putString("e_todate",toDateEtxt.getText().toString());
                 extras.putString("e_amount",amount.getText().toString());
                 extras.putParcelable("e_image", bp);
-                /*extras.putParcelable("e_image", image);*/
                 intent.putExtras(extras);
-        /*        intent.putExtra("e_image",bp);*/
                 startActivity(intent);
 
                 String val1, val2, val3, val4, val5, val6, val7, val8, val9, val10;
@@ -212,28 +212,11 @@ public class BuyPass extends ActionBarActivity {
                 val3 = fromDateEtxt.getText().toString();
                 val4 = toDateEtxt.getText().toString();
 
-  /*              Toast.makeText(getApplicationContext(),  val1 ,
-                        Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(),  val2 ,
-                        Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(),  passtype ,
-                        Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(),  passduration ,
-                        Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(),  val3 ,
-                        Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(),  val4 ,
-                        Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(),  amount.getText().toString() ,
-                        Toast.LENGTH_LONG).show();*/
 
 
                 passdb=openOrCreateDatabase("passamtDB", Context.MODE_PRIVATE, null);
 
                 passdb.execSQL("DELETE from validpass;");
-/*                passdb.execSQL("INSERT into validpass (name, address, passtype, passduration, fromdate, todate, amount) VALUES " +
-                        "(custname.getText().toString(), custaddress.getText().toString(), passtype, passduration, " +
-                        "fromDateEtxt.getText().toString(), amount);");*/
 
                   passdb.execSQL("INSERT into validpass (name, address, passtype, passduration, fromdate, todate, amount) VALUES" +
                           " ('" + val1 + "', '" + val2 + "', '" + passtype + "', '" + passduration + "', '" + val3 + "', '" + val4 + "', " + intamount + ");");
@@ -248,21 +231,6 @@ public class BuyPass extends ActionBarActivity {
                       val9 = String.valueOf(c.getString(4));
                       val10 = String.valueOf(c.getString(5));
                       outamount = c.getInt(6);
-
-/*                Toast.makeText(getApplicationContext(), "Name: " + val5 ,
-                        Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(),  "Address: " + val6 ,
-                        Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(),  "passtype: " + val7 ,
-                        Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(),  "passduration: " + val8 ,
-                        Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(),  "fromdate: " + val9 ,
-                        Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(),  "todate: " + val10 ,
-                        Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(), "amount: " + outamount,
-                        Toast.LENGTH_LONG).show();*/
                   }
 
                 passdb.close();
@@ -273,10 +241,6 @@ public class BuyPass extends ActionBarActivity {
 
     public void open(){
         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-
-        /*imageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(),"fname_" +
-                   String.valueOf(System.currentTimeMillis()) + ".jpg"));*/
-
         startActivityForResult(intent, 0);
     }
 
@@ -285,30 +249,26 @@ public class BuyPass extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
-        /*Bundle extras = data.getExtras();*/
-
-        /*Toast.makeText(getApplicationContext(), (String)"Image Path: " + (String)imageUri.toString(),
-                Toast.LENGTH_LONG).show();*/
-
-
         bp = (Bitmap) data.getExtras().get("data");
         imgFavorite.setImageBitmap(bp);
-        /*boolean retval = saveImageToInternalStorage(bp);*/
 
-        /*imgFavorite.setImageBitmap(decodeFile(selectedImagePath));*/
-
-        /*String pathToImage = mImageCaptureUri.getPath();
-        Toast.makeText(getApplicationContext(), (String)pathToImage,
-                Toast.LENGTH_LONG).show();*/
-
+        FileOutputStream fos;
+        try {
+            fos = openFileOutput("VINAY_1", Context.MODE_PRIVATE);
+            bp.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
     }
 
 
     private void setDateTimeField() {
-
-        /*fromDateEtxt.setInputType(InputType.TYPE_NULL);
-        toDateEtxt.setInputType(InputType.TYPE_NULL);*/
 
         Calendar newCalendar = Calendar.getInstance();
 
@@ -324,27 +284,13 @@ public class BuyPass extends ActionBarActivity {
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-
-
-
-        /*public void onDateSet(DatePicker this, int year, int month, int day) {
-            // Do something with the date chosen by the user
-            Toast.makeText(getApplicationContext(), (String)"I am here",
-                    Toast.LENGTH_LONG).show();*/
-        /*}*/
     }
 
     private void toDateSet(){
 
         Calendar newCalendar1 = (Calendar)newDate.clone();
         passduration = ((Spinner)findViewById(R.id.s_passduration)).getSelectedItem().toString();
-        /*newCalendar1 = newDate;*//**/
-        /*newCalendar1.setTime(newDate);*/
-        /*newCalendar1.add(Calendar.DAY_OF_MONTH, 12);*/
         int add_days =0;
-
-        /*Toast.makeText(getApplicationContext(), (String) passduration,
-                Toast.LENGTH_LONG).show();*/
 
         switch (passduration){
             case "Daily"   :    add_days = 0;
@@ -353,8 +299,6 @@ public class BuyPass extends ActionBarActivity {
                 break;
         }
         newCalendar1.add(Calendar.DAY_OF_MONTH, add_days);
-        /*toDateEtxt = fromDateEtxt + 1;*/
-        /*toDateEtxt.setText(dateFormatter.format(newCalendar1.getTime()));*/
         toDateEtxt.setText(dateFormatter.format(newCalendar1.getTime()));
 
     }
@@ -369,17 +313,12 @@ public class BuyPass extends ActionBarActivity {
         Cursor c=passdb.rawQuery("SELECT amount FROM passamt WHERE passtype='"+passtype+"' AND passduration='"+passduration+"'",null);
         if(c.moveToFirst())
         {
-            // Displaying record if found
-
-            /*amount.setText(c.getString(1));*/
             amount.setText(String.valueOf(c.getInt(0)));
             intamount = c.getInt(0);
 
         }
         else
         {
-            /*showMessage("Error", "Invalid Rollno");*/
-
             Toast.makeText(getApplicationContext(), (String)"No Records in DB",
                     Toast.LENGTH_LONG).show();
 
@@ -411,27 +350,6 @@ public class BuyPass extends ActionBarActivity {
         prefeditor.putString("custaddress", custaddress.getText().toString());
         prefeditor.commit();
 
-    }
-
-
-    public boolean saveImageToInternalStorage(Bitmap image) {
-
-
-        try {
-// Use the compress method on the Bitmap object to write image to
-// the OutputStream
-
-            FileOutputStream fos = context.openFileOutput("BITMAP_1", Context.MODE_PRIVATE);
-
-// Writing the bitmap to the output stream
-            image.compress(Bitmap.CompressFormat.PNG, 100, fos);
-            fos.close();
-
-            return true;
-        } catch (Exception e) {
-
-            return false;
-        }
     }
 
     @Override
