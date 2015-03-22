@@ -6,17 +6,23 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 
 public class ViewPass extends ActionBarActivity {
@@ -32,7 +38,7 @@ public class ViewPass extends ActionBarActivity {
     ImageView imgFavorite;
     Bitmap bp = null;
     SQLiteDatabase passdb;
-
+    private LinearLayout masterLayout;
     Context context;
 
     @Override
@@ -48,6 +54,7 @@ public class ViewPass extends ActionBarActivity {
         todate = (TextView)findViewById(R.id.t_todatedisp);
         amount = (TextView)findViewById(R.id.t_amountdisp);
         imgFavorite = (ImageView)findViewById(R.id.imageView1);
+        masterLayout = (LinearLayout)findViewById(R.id.l_masterlayout);
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -96,6 +103,7 @@ public class ViewPass extends ActionBarActivity {
 
         }
 
+        setBackGround();
 
      /*   try {
             File filePath = context.getFileStreamPath("desiredFilename.png");
@@ -119,6 +127,37 @@ public class ViewPass extends ActionBarActivity {
     }
 
 
+    private void setBackGround(){
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss", Locale.US);
+        Date from_date_conv = null;
+        Date to_date_conv = null;
+        Date current_time = new Date();
+        /*String curr_date = df.format(current_time);*/
+
+        try {
+            from_date_conv = df.parse(fromdate.getText().toString());
+            to_date_conv = df.parse(todate.getText().toString());
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
+
+
+        if (passduration.getText().toString().equals("Daily")){
+            if(current_time.after(from_date_conv) && current_time.before(to_date_conv)){
+                masterLayout.setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
+            }else
+                masterLayout.setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
+        }else if (passduration.getText().toString().equals("Monthly")) {
+            if(current_time.after(from_date_conv) && current_time.before(to_date_conv)){
+                masterLayout.setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
+            }else
+                masterLayout.setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
+        }else
+            masterLayout.setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
+
+        /*masterLayout.setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));*/
+/*        masterLayout.setBackgroundColor(Color.RED);*/
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

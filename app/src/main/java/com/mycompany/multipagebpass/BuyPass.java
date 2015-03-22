@@ -182,11 +182,19 @@ public class BuyPass extends ActionBarActivity {
 
     private void beginpayment(){
 
-        pay_button = (Button)findViewById(R.id.b_pass);
+                pay_button = (Button)findViewById(R.id.b_pass);
 
         pay_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v1) {
+
+                String from_date_time;
+                String to_date_time;
+                String start_time = " 00:00:01";
+                String end_time = " 23:59:59";
+
+                from_date_time = fromDateEtxt.getText().toString().concat(start_time);
+                to_date_time = toDateEtxt.getText().toString().concat(end_time);
 
                 setSharedpref();
              /*   imgFavorite.buildDrawingCache();
@@ -198,8 +206,10 @@ public class BuyPass extends ActionBarActivity {
                 extras.putString("e_address",custaddress.getText().toString());
                 extras.putString("e_passtype",passtype);
                 extras.putString("e_passduration",passduration);
-                extras.putString("e_fromdate",fromDateEtxt.getText().toString());
-                extras.putString("e_todate",toDateEtxt.getText().toString());
+                /*extras.putString("e_fromdate",fromDateEtxt.getText().toString());
+                extras.putString("e_todate",toDateEtxt.getText().toString());*/
+                extras.putString("e_fromdate",from_date_time);
+                extras.putString("e_todate",to_date_time);
                 extras.putString("e_amount",amount.getText().toString());
                 extras.putParcelable("e_image", bp);
                 intent.putExtras(extras);
@@ -209,10 +219,10 @@ public class BuyPass extends ActionBarActivity {
                 int outamount;
                 val1 = custname.getText().toString();
                 val2 = custaddress.getText().toString();
-                val3 = fromDateEtxt.getText().toString();
-                val4 = toDateEtxt.getText().toString();
-
-
+                val3 = from_date_time;
+                val4 = to_date_time;
+                /*val3 = fromDateEtxt.getText().toString();
+                val4 = toDateEtxt.getText().toString();*/
 
                 passdb=openOrCreateDatabase("passamtDB", Context.MODE_PRIVATE, null);
 
@@ -348,6 +358,8 @@ public class BuyPass extends ActionBarActivity {
         SharedPreferences.Editor prefeditor = user_details.edit();
         prefeditor.putString("custname", custname.getText().toString());
         prefeditor.putString("custaddress", custaddress.getText().toString());
+      /*  prefeditor.putString("fromdate", fromDateEtxt.getText().toString());
+        prefeditor.putString("todate",toDateEtxt.getText().toString());*/
         prefeditor.commit();
 
     }
